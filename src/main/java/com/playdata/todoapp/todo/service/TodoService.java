@@ -2,7 +2,9 @@ package com.playdata.todoapp.todo.service;
 
 import com.playdata.todoapp.member.domain.entitiy.Member;
 import com.playdata.todoapp.member.exception.MemberNotFoundException;
+import com.playdata.todoapp.member.exception.NotValidLoginException;
 import com.playdata.todoapp.member.repository.MemberRepository;
+import com.playdata.todoapp.member.service.MemberService;
 import com.playdata.todoapp.todo.domain.entity.Like;
 import com.playdata.todoapp.todo.domain.entity.Todo;
 import com.playdata.todoapp.todo.domain.request.TodoRequest;
@@ -29,6 +31,9 @@ public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
     private final LikeRepository likeRepository;
+    
+    //나중에 분리하자
+    private final MemberService memberService;
     private final int DEFAULT_PAGE_SIZE = 20;
 
     public Todo findTodoById(Long id) {
@@ -65,7 +70,11 @@ public class TodoService {
                 .collect(Collectors.toList());
     }
     public Long save(TodoRequest todoRequest){
+
         Member member = findMemberById(todoRequest.memberId());
+
+        memberService.isValidLogin(member.getId());
+
         Todo todo = Todo.createTodo(todoRequest.title(), todoRequest.content(), member);
         Todo saveTodo = todoRepository.save(todo);
         return saveTodo.getId();
