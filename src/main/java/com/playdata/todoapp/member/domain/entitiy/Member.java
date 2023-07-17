@@ -1,16 +1,16 @@
-package com.playdata.todoapp.member.domain;
+package com.playdata.todoapp.member.domain.entitiy;
 
 import com.playdata.todoapp.todo.domain.Todo;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Builder
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
