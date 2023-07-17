@@ -19,13 +19,18 @@ public class Todo {
     @ManyToOne
     private Member member;
 
-    public static Todo createTodo(String title, String content){
+    public static Todo createTodo(String title, String content, Member member){
         Todo todo = new Todo();
         todo.title = title;
         todo.content = content;
         todo.isDone = false;
         todo.likeCount = 0;
+        todo.member = member;
         return todo;
+    }
+
+    public void completeTodo(){
+        this.isDone = true;
     }
 
     public void updateTodo(String title, String content, Boolean isDone){
