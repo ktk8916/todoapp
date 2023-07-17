@@ -4,6 +4,7 @@ import com.playdata.todoapp.todo.domain.entity.Todo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,5 +22,5 @@ public class Member {
     private String password;
     private Integer age;
     @OneToMany(mappedBy = "member")
-    private List<Todo> todos;
+    private List<Todo> todos = new ArrayList<>();
 }
