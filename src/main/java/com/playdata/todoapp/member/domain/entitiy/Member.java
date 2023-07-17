@@ -1,6 +1,6 @@
 package com.playdata.todoapp.member.domain.entitiy;
 
-import com.playdata.todoapp.todo.domain.Todo;
+import com.playdata.todoapp.todo.domain.entity.Todo;
 import jakarta.persistence.*;
 import lombok.*;
 
