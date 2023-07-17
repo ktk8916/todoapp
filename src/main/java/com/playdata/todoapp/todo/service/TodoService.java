@@ -103,7 +103,7 @@ public class TodoService {
     public void like(Long todoId, Long memberId) {
         Todo todo = findTodoById(todoId);
         Member member = findMemberById(memberId);
-
+        todo.increaseLikeCount();
         Like like = Like.createLike(todo, member);
         likeRepository.save(like);
     }

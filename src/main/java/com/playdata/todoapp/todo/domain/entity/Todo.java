@@ -38,4 +38,8 @@ public class Todo {
         this.content = content;
         this.isDone = isDone;
     }
+
+    public void increaseLikeCount(){
+        this.likeCount++;
+    }
 }
