@@ -4,8 +4,6 @@ import com.playdata.todoapp.member.domain.entitiy.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,4 +18,13 @@ public class Todo {
     private Integer likeCount;
     @ManyToOne
     private Member member;
+
+    public static Todo createTodo(String title, String content){
+        Todo todo = new Todo();
+        todo.title = title;
+        todo.content = content;
+        todo.isDone = false;
+        todo.likeCount = 0;
+        return todo;
+    }
 }
