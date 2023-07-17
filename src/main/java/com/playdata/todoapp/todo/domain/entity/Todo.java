@@ -20,6 +20,4 @@ public class Todo {
     private Integer likeCount;
     @ManyToOne
     private Member member;
-    @OneToMany(mappedBy = "todo")
-    private List<Like> likes;
 }
