@@ -1,6 +1,6 @@
 package com.playdata.todoapp.todo.repository;
 
-import com.playdata.todoapp.todo.domain.Todo;
+import com.playdata.todoapp.todo.domain.entity.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
