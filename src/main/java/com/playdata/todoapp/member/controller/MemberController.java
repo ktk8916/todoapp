@@ -17,6 +17,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @GetMapping
+    public List<MemberResponse> findAll(
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page){
+        return memberService.findAll(page);
+    }
+
     @PostMapping("/signup")
     public void signup(@RequestBody SignupRequest signupRequest){
         memberService.signup(signupRequest);
@@ -25,10 +31,5 @@ public class MemberController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
         return memberService.login(loginRequest);
-    }
-
-    @GetMapping
-    public List<MemberResponse> findAll(){
-        return memberService.findAll();
     }
 }
