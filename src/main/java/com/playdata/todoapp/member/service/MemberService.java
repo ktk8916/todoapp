@@ -30,7 +30,7 @@ public class MemberService {
                 .findMemberByEmailAndPassword(
                     loginRequest.email(),
                     loginRequest.password())
-                .orElseThrow(() -> new MemberNotFoundException("그런 멤버 없다"));
+                .orElseThrow(MemberNotFoundException::new);
 
         return LoginResponse.from(member);
     }
