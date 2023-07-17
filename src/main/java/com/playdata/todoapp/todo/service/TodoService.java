@@ -40,6 +40,18 @@ public class TodoService {
                 .map(TodoResponse::from)
                 .collect(Collectors.toList());
     }
+    public List<TodoResponse> searchTodoByContent(String content, Boolean isDone, Integer page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+
+        List<Todo> todos = isDone==null ?
+                todoRepository.findAllFetchByContentContaining(content, pageable):
+                todoRepository.findAllFetchByContentContainingAndIsDone(content, isDone, pageable);
+
+        return todos
+                .stream()
+                .map(TodoResponse::from)
+                .collect(Collectors.toList());
+    }
     public Long save(TodoRequest todoRequest){
         Member member = memberRepository
                 .findById(todoRequest.memberId())
@@ -62,5 +74,6 @@ public class TodoService {
         Todo todo = findById(id);
         todoRepository.delete(todo);
     }
+
 
 }

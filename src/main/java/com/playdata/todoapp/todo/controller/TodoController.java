@@ -18,10 +18,19 @@ public class TodoController {
 
     @GetMapping
     public List<TodoResponse> findByTitle(
-            @RequestParam("title") String title,
-            @RequestParam("page") Integer page){
+            @RequestParam(value = "title", required = false, defaultValue = "") String title,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page){
         return todoService.findByTitle(title, page);
     }
+
+    @GetMapping
+    public List<TodoResponse> searchTodoByContent(
+            @RequestParam(value = "content", required = false, defaultValue = "") String content,
+            @RequestParam(value = "isDone", required = false) Boolean isDone,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page){
+        return todoService.searchTodoByContent(content, isDone, page);
+    }
+
     @PostMapping
     public Long save(@RequestBody TodoRequest todoRequest){
         return todoService.save(todoRequest);
