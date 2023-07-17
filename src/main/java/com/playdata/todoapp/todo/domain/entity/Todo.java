@@ -27,4 +27,10 @@ public class Todo {
         todo.likeCount = 0;
         return todo;
     }
+
+    public void updateTodo(String title, String content, Boolean isDone){
+        this.title = title;
+        this.content = content;
+        this.isDone = isDone;
+    }
 }
