@@ -5,6 +5,7 @@ import com.playdata.todoapp.todo.domain.request.TodoUpdateRequest;
 import com.playdata.todoapp.todo.domain.response.TodoResponse;
 import com.playdata.todoapp.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +17,14 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    @GetMapping
+    @GetMapping("/title")
     public List<TodoResponse> findByTitle(
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page){
         return todoService.findByTitle(title, page);
     }
 
-    @GetMapping("/title")
+    @GetMapping()
     public List<TodoResponse> searchByContent(
             @RequestParam(value = "content", required = false, defaultValue = "") String content,
             @RequestParam(value = "isDone", required = false) Boolean isDone,
@@ -32,11 +33,13 @@ public class TodoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Long save(@RequestBody TodoRequest todoRequest){
         return todoService.save(todoRequest);
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public void update(
             @PathVariable("id") Long id,
             @RequestBody TodoUpdateRequest todoUpdateRequest){
@@ -44,6 +47,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void delete(@PathVariable("id") Long id){
         todoService.delete(id);
     }
