@@ -19,4 +19,13 @@ public class MemberRestControllerAdvice {
     public String duplicateEmailException(DuplicateEmailException e){
         return e.getMessage();
     }
+
+    @ExceptionHandler(NotValidLoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String notValidLoginException(NotValidLoginException e){
+        return e.getMessage();
+    }
+
+
+
 }
