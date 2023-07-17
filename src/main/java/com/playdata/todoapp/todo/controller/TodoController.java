@@ -23,12 +23,12 @@ public class TodoController {
         return todoService.findByTitle(title, page);
     }
 
-    @GetMapping
-    public List<TodoResponse> searchTodoByContent(
+    @GetMapping("/title")
+    public List<TodoResponse> searchByContent(
             @RequestParam(value = "content", required = false, defaultValue = "") String content,
             @RequestParam(value = "isDone", required = false) Boolean isDone,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page){
-        return todoService.searchTodoByContent(content, isDone, page);
+        return todoService.searchByContent(content, isDone, page);
     }
 
     @PostMapping

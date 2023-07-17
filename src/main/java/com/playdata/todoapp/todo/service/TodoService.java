@@ -40,7 +40,7 @@ public class TodoService {
                 .map(TodoResponse::from)
                 .collect(Collectors.toList());
     }
-    public List<TodoResponse> searchTodoByContent(String content, Boolean isDone, Integer page) {
+    public List<TodoResponse> searchByContent(String content, Boolean isDone, Integer page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
 
         List<Todo> todos = isDone==null ?

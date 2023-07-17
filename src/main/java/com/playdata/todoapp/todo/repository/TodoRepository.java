@@ -16,9 +16,11 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findAllFetchByTitleContaining(@Param("title") String name, Pageable pageable);
 
     @Query("select t from Todo t left join fetch t.member m where t.content like :content")
-    List<Todo> findAllFetchByContentContaining(@Param("content") String content, Pageable pageable);
+    List<Todo> findAllFetchByContentContaining(
+            @Param("content") String content,
+            Pageable pageable);
 
-    @Query("select t from Todo t left join fetch t.member m where t.content like :content and :isDone")
+    @Query("select t from Todo t left join fetch t.member m where t.content like :content and t.isDone = :isDone")
     List<Todo> findAllFetchByContentContainingAndIsDone(
             @Param("content") String content,
             @Param("isDone") Boolean isDone,
