@@ -9,6 +9,7 @@ import com.playdata.todoapp.todo.domain.request.TodoUpdateRequest;
 import com.playdata.todoapp.todo.domain.response.TodoResponse;
 import com.playdata.todoapp.todo.exception.TodoNotFoundException;
 import com.playdata.todoapp.todo.repository.TodoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TodoService {
 
     private final MemberRepository memberRepository;
@@ -44,8 +46,8 @@ public class TodoService {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
 
         List<Todo> todos = isDone==null ?
-                todoRepository.findAllFetchByContentContaining(content, pageable):
-                todoRepository.findAllFetchByContentContainingAndIsDone(content, isDone, pageable);
+                todoRepository.findAllFetchByContentContaining("%"+content+"%", pageable):
+                todoRepository.findAllFetchByContentContainingAndIsDone("%"+content+"%", isDone, pageable);
 
         return todos
                 .stream()
@@ -55,8 +57,8 @@ public class TodoService {
     public Long save(TodoRequest todoRequest){
         Member member = memberRepository
                 .findById(todoRequest.memberId())
-                .orElseThrow(() -> new MemberNotFoundException("id 그런 멤버 없다"));
-        Todo todo = Todo.createTodo(todoRequest.title(), todoRequest.content());
+                .orElseThrow(MemberNotFoundException::new);
+        Todo todo = Todo.createTodo(todoRequest.title(), todoRequest.content(), member);
         Todo saveTodo = todoRepository.save(todo);
         return saveTodo.getId();
     }
