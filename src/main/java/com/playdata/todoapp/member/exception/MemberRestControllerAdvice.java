@@ -10,7 +10,13 @@ public class MemberRestControllerAdvice {
 
     @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String runtimeExceptionHandler(MemberNotFoundException e){
+    public String memberNotFoundExceptionHandler(MemberNotFoundException e){
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String duplicateEmailException(DuplicateEmailException e){
         return e.getMessage();
     }
 }
