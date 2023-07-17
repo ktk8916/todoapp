@@ -19,4 +19,11 @@ public class Like {
     @ManyToOne @JoinColumn(name = "todo_id")
     private Todo todo;
 
+    public static Like createLike(Todo todo, Member member){
+        Like like = new Like();
+        like.todo = todo;
+        like.member = member;
+        return like;
+    }
+
 }

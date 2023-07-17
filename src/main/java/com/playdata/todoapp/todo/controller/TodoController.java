@@ -46,6 +46,22 @@ public class TodoController {
         todoService.update(id, todoUpdateRequest);
     }
 
+    @PostMapping("/{todoId}/like/{memberId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void like(
+            @PathVariable("todoId") Long todoId,
+            @PathVariable("memberId") Long memberId){
+        todoService.like(todoId, memberId);
+    }
+
+    @PutMapping("/{todoId}/check/{memberId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void complete(
+            @PathVariable("todoId") Long todoId,
+            @PathVariable("memberId") Long memberId){
+        todoService.complete(todoId, memberId);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void delete(@PathVariable("id") Long id){
