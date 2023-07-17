@@ -28,15 +28,13 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LoginLogRepository loginLogRepository;
 
-    public boolean isValidLogin(Long memberId){
+    public void isValidLogin(Long memberId){
         LoginLog loginLog = loginLogRepository
                 .findFirstByMemberIdOrderByIdDesc(memberId)
                 .orElseThrow(MemberNotFoundException::new);
 
         if(LocalDateTime.now().isAfter(loginLog.getEndedAt())){
             throw new NotValidLoginException();
-        } else {
-            return true;
         }
     }
     public void signup(SignupRequest signupRequest){
