@@ -1,9 +1,6 @@
 package com.playdata.todoapp.todo.service;
 
 import com.playdata.todoapp.member.domain.entitiy.Member;
-import com.playdata.todoapp.member.exception.MemberNotFoundException;
-import com.playdata.todoapp.member.exception.NotValidLoginException;
-import com.playdata.todoapp.member.repository.MemberRepository;
 import com.playdata.todoapp.member.service.MemberService;
 import com.playdata.todoapp.todo.domain.entity.Like;
 import com.playdata.todoapp.todo.domain.entity.Todo;
@@ -20,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +24,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class TodoService {
 
-    private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
     private final LikeRepository likeRepository;
     
@@ -36,18 +31,11 @@ public class TodoService {
     private final MemberService memberService;
     private final int DEFAULT_PAGE_SIZE = 20;
 
-    public Todo findTodoById(Long id) {
+    public Todo findById(Long id) {
         return todoRepository
                 .findById(id)
                 .orElseThrow(TodoNotFoundException::new);
     }
-    private Member findMemberById(Long id) {
-        Member member = memberRepository
-                .findById(id)
-                .orElseThrow(MemberNotFoundException::new);
-        return member;
-    }
-
     public List<TodoResponse> findByTitle(String title, Integer page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
         List<Todo> todos = todoRepository.findAllFetchByTitleContaining("%"+title+"%", pageable);
@@ -60,6 +48,7 @@ public class TodoService {
     public List<TodoResponse> searchByContent(String content, Boolean isDone, Integer page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
 
+        //나중에 동적쿼리로 변경하자
         List<Todo> todos = isDone==null ?
                 todoRepository.findAllFetchByContentContaining("%"+content+"%", pageable):
                 todoRepository.findAllFetchByContentContainingAndIsDone("%"+content+"%", isDone, pageable);
@@ -71,7 +60,7 @@ public class TodoService {
     }
     public Long save(TodoRequest todoRequest){
 
-        Member member = findMemberById(todoRequest.memberId());
+        Member member = memberService.findById(todoRequest.memberId());
 
         memberService.isValidLogin(member.getId());
 
@@ -81,12 +70,12 @@ public class TodoService {
     }
     public void complete(Long todoId, Long memberId){
         //대충 멤버검증 로직
-        Todo todo = findTodoById(todoId);
+        Todo todo = findById(todoId);
         todo.completeTodo();
     }
 
     public void update(Long id, TodoUpdateRequest todoUpdateRequest) {
-        Todo todo = findTodoById(id);
+        Todo todo = findById(id);
 
         todo.updateTodo(
                 todoUpdateRequest.title(),
@@ -95,14 +84,14 @@ public class TodoService {
     }
 
     public void delete(Long id){
-        Todo todo = findTodoById(id);
+        Todo todo = findById(id);
         todoRepository.delete(todo);
     }
 
 
     public void like(Long todoId, Long memberId) {
-        Todo todo = findTodoById(todoId);
-        Member member = findMemberById(memberId);
+        Todo todo = findById(todoId);
+        Member member = memberService.findById(memberId);
         todo.increaseLikeCount();
         Like like = Like.createLike(todo, member);
         likeRepository.save(like);

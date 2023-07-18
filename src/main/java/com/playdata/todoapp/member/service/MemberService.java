@@ -28,6 +28,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LoginLogRepository loginLogRepository;
 
+    public Member findById(Long id) {
+        return memberRepository
+                .findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
     public void isValidLogin(Long memberId){
         LoginLog loginLog = loginLogRepository
                 .findFirstByMemberIdOrderByIdDesc(memberId)
